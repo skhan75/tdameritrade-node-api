@@ -1,86 +1,138 @@
 module.exports = {
     account: {
-        getAccount: function (accountId) {
-            return this.request({ url: `/accounts/${accountId}` });
+        getAccount(accountId) {
+            return this.request({ 
+                url: `/accounts/${accountId}` 
+            });
         },
-        getAccounts: function () {
-            return this.request({ url: "/accounts" });
+        getAccounts() {
+            return this.request({ 
+                url: "/accounts" 
+            });
         },
-        getTransaction: function (accountId, transactionId) {
-            return this.request({ url: `/accounts/${accountId}/transactions/${transactionId}` });
+        getTransaction(accountId, transactionId) {
+            return this.request({ 
+                url: `/accounts/${accountId}/transactions/${transactionId}` 
+            });
         },
-        getTransactions: function () {
+        getTransactions() {
 
         },
-        getWatchlist: function (accountId, watchlistId) { 
-            return this.request({ url: `/accounts/${accountId}/watchlists/${watchlistId}` });
+        getWatchlist(accountId, watchlistId) {
+            return this.request({ 
+                url: `/accounts/${accountId}/watchlists/${watchlistId}` 
+            });
         },
-        getWatchlists: function () { 
-            return this.request({ url: `/accounts/${accountId}/watchlists` });
+        getWatchlists(accountId) {
+            return this.request({ 
+                url: `/accounts/${accountId}/watchlists` 
+            });
         },
-        createWatchList: function () {
+        createWatchList() {
 
         },
-        updateWatchList: function () {
+        updateWatchList() {
 
-        }
+        },
     },
     orders: {
-        getOrders: function (accountId, maxResults, fromEnteredTime, toEnteredTime, status) {
-            return this.request({ url: `/accounts/${accountId}/orders`, params: { 
-                maxResults,
-                fromEnteredTime,
-                toEnteredTime,
-                status
-            } });
+        getOrders(accountId, maxResults, fromEnteredTime, toEnteredTime, status) {
+            return this.request({
+                url: `/accounts/${accountId}/orders`,
+                params: {
+                    maxResults,
+                    fromEnteredTime,
+                    toEnteredTime,
+                    status,
+                },
+            });
         },
-        getOrder: function (accountId, orderId) {
-            return this.request({ url: `/accounts/${accountId}/orders/${orderId}` });
+        getOrder(accountId, orderId) {
+            return this.request({ 
+                url: `/accounts/${accountId}/orders/${orderId}` 
+            });
         },
-        placeOrder: function () { 
-
+        placeOrder(accountId, orderData) {
+            return this.request({ 
+                method: "post", 
+                data: orderData, 
+                url: `/accounts/${accountId}/orders` 
+            });
         },
-        replaceOrder: function () { 
-
+        replaceOrder(accountId, orderId, newOrderData) {
+            return this.request({ 
+                method: "put", 
+                data: newOrderData, 
+                url: `/accounts/${accountId}/orders/orderId` 
+            });
         },
-        cancelOrder: function () { 
-
+        cancelOrder(accountId, orderId) {
+            return this.request({ 
+                method: "delete", 
+                url: `/accounts/${accountId}/orders/${orderId}` 
+            });
         },
-        createSavedOrder: function () { 
-
+        createSavedOrder(accountId, orderData) {
+            return this.request({ 
+                method: "post", 
+                data: orderData, 
+                url: `/accounts/${accountId}/savedorders` 
+            });
         },
-        deleteSavedOrder: function () {
-
+        deleteSavedOrder(accountId, orderData, savedOrderId) {
+            return this.request({ 
+                method: "delete", 
+                data: orderData, 
+                url: `/accounts/${accountId}/savedorders/${savedOrderId}` 
+            });
         },
-        getSavedOrder: function (accountId, savedOrderId) {
-
+        getSavedOrder(accountId, savedOrderId) {
+            return this.request({ 
+                url: `/accounts/${accountId}/savedorders/${savedOrderId}` 
+            });
         },
-        getSavedOrders: function () {
-
+        getSavedOrders(accountId) {
+            return this.request({ 
+                url: `/accounts/${accountId}/savedorders` 
+            });
         },
-        replaceSavedOrder: function () {
-
+        replaceSavedOrder(accountId, savedOrderId, newOrderData) {
+            return this.request({ 
+                method: "put", 
+                data: newOrderData, 
+                url: `/accounts/${accountId}/savedorders/${savedOrderId}` 
+            });
         },
     },
     info: {
-        getPreferences: function (accountId) {
-            return this.request({ url: `/accounts/${accountId}/preferences` });
-        }
+        getPreferences(accountId) {
+            return this.request({ 
+                url: `/accounts/${accountId}/preferences` 
+            });
+        },
     },
     market: {
-        getQuote: function (symbol) {
-            return this.request({ url: `/marketdata/${symbol}/quotes` });
+        getQuote(symbol) {
+            return this.request({ 
+                url: `/marketdata/${symbol}/quotes` 
+            });
         },
-        getQuotes: function (symbols) {
-            return this.request({ url: `/marketdata/quotes`, params: { symbol: [].concat(symbols).join(',') } });
+        getQuotes(symbols) {
+            return this.request({ 
+                url: "/marketdata/quotes",
+                params: { symbol: [].concat(symbols).join(",") } 
+            });
         },
-        getPriceHistory: function (symbol) {
-            return this.request({ url: `/marketdata/${symbol}/pricehistory` });
+        getPriceHistory(symbol) {
+            return this.request({ 
+                url: `/marketdata/${symbol}/pricehistory` 
+            });
         },
-        getMarketHours: function (markets) {
-            return this.request({ url: `/marketdata/hours`, params: { markets: [].concat(markets).join(','),  date } });
+        getMarketHours(markets, date) {
+            return this.request({ 
+                url: "/marketdata/hours", 
+                params: { markets: [].concat(markets).join(","), date } 
+            });
         },
-        getMovers
-
-    }
-}
+    },
+};
