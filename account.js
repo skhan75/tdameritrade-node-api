@@ -1,4 +1,3 @@
-// const Base = require('./base');
 const operations = require("./operations");
 
 class TDAccount {
@@ -94,7 +93,7 @@ TDAccount.prototype.getWatchlists = function () {
  * @returns
  */
 TDAccount.prototype.getPreferences = function () {
-    return operations.info.getPreferences.call(this, [this.accountId]);
+    return operations.info.getAccountPreferences.call(this, [this.accountId]);
 };
 
 module.exports = TDAccount;
