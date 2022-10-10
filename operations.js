@@ -212,7 +212,7 @@ module.exports = {
          */
         getUserPrincipals() {
             return this.request({
-                url: `/userprincipals`
+                url: "/userprincipals"
             });
         },
         /**

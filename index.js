@@ -1,27 +1,19 @@
 const axios = require("axios");
 const TDAccount = require("./account");
-const { account, orders, info, market } = require('./operations');
+const { account, orders, info, market } = require("./operations");
+const { generateToken } = require("./oauth");
 const TDMarketData = require("./marketData");
-const operations = require("./operations");
-
-const constants = {
-    BASE_URL: "https://api.tdameritrade.com/v1",
-    API_KEY_SUFFIX: "@AMER.OAUTHAP",
-};
-const defaults = {
-    REDIRECT_URL: "https://localhost:8080",
-    GET: "get",
-    POST: "post",
-};
+const EventEmitter = require("eventemitter3");
+const { constants, defaults } = require("./properties");
 
 class TDAmeritrade {
     constructor(config) {
         this.apiKey = config.apiKey;
         this.clientId = (`${config.apiKey}`).endsWith(constants.API_KEY_SUFFIX)
             ? config.apiKey : config.apiKey + constants.API_KEY_SUFFIX;
-        this.redirectURL = config.redirectURL || defaults.REDIRECT_URL;
-        this.accessToken = null;
-        this.refreshToken = null;
+        this.redirectUrl = (config.redirectUrl || defaults.REDIRECT_URL) + ":" + (process.env.PORT || defaults.PORT);
+        this.accessToken = constants.NULL;
+        this.refreshToken = constants.NULL;
         this.request = function ({
             method = defaults.GET, url, data, params={},
         }) {
@@ -65,6 +57,11 @@ TDAmeritrade.prototype.getQuote = market.getQuote;
 TDAmeritrade.prototype.getPrefreferences = info.getAccountPreferences;
 TDAmeritrade.prototype.getUserPrincipals = info.getUserPrincipals;
 TDAmeritrade.prototype.updateAccountPreferences = info.updateAccountPreferences;
+
+TDAmeritrade.prototype.generateToken = generateToken;
+// TDAmeritrade.prototype.authorize = authorize
+// TDAmeritrade.prototype.login = login
+// TDAmeritrade.prototype.on = on
 
 // TDAmeritrade.prototype.account = function (accountId) {
 //     const instance = new TDAccount(accountId);
