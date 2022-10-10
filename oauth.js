@@ -6,13 +6,13 @@ const Open = require("open");
 const request = require("request");
 
 function getAuthUrl(redirectUrl, clientId) {
-    return `https://auth.tdameritrade.com/auth?response_type=code&redirect_uri=${this.redirectUrl || redirectUrl}&client_id=${this.clientId || clientId}`;
+    return `https://auth.tdameritrade.com/auth?response_type=code&redirect_uri=${this.redirectUrl 
+    || redirectUrl}&client_id=${this.clientId || clientId}`;
 }
 
-async function generateToken() {
+function generateToken() {
     return new Promise((resolve, reject) => {
         try {
-            console.log("THIS", this);
             const serverOptions = {
                 key: fs.readFileSync("selfsigned.key"),
                 cert: fs.readFileSync("selfsigned.crt")
@@ -28,8 +28,6 @@ async function generateToken() {
                         return res.end();
                     }
 
-                    console.log("RED ", this.redirectUrl);
-
                     const data = new URLSearchParams();
                     data.append("grant_type", "authorization_code");
                     data.append("access_type", "offline");
@@ -38,9 +36,14 @@ async function generateToken() {
                     data.append("code", decodeURIComponent(authCode.toString()));
 
                     try {
-                        // const data = await this.axios.post("/oauth2/token", params, )
-                        const response = await this.request({ method: "post", url: "/oauth2/token", data });
-                        resolve(response.data);
+                        const response = await this.request({ 
+                            method: "post", url: "/oauth2/token", data 
+                        });
+                        
+                        this.setAccessToken(response.data.access_token)
+                            .setRefreshToken(response.data.refresh_token);
+                        
+                        resolve();
                     } catch (e) {
                         console.error(e);
                         reject();
@@ -54,9 +57,13 @@ async function generateToken() {
             console.error("Error", e);
         }
     });
-    
+}
+
+function login() {
+    return generateToken.call(this);
 }
 
 module.exports = {
-    generateToken
+    login,
+    getAuthUrl
 };
