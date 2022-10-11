@@ -1,5 +1,4 @@
 const { TDAmeritrade } = require("./index");
-const Open = require("open");
 
 const init = async () => {
     
