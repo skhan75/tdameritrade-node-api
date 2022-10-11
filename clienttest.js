@@ -4,36 +4,20 @@ const Open = require("open");
 const init = async () => {
     
     const td = new TDAmeritrade({ apiKey: process.env.CLIENT_ID });
-
     console.log(td);
+
+    const quote = await td.getQuote("AMZN");
+    console.log("AMZN Quote", quote.data)
+
+    const quotes = await td.getQuotes(["AMZN", "AAPL"]);
+    console.log("Quotes", quotes.data)
+
+    // You need to login first for all account and order related stuff, 
+    // As it requires Authorization token in the header of the request
+    const loginResponse = await td.login();
     
-
-
-
-    // console.log(await td.getQuote("AMZN"))
-    // const res = await td.login();
-    // console.log("FINAL RES", res);
-    // console.log(td);
-
-
-    // console.log(res)
-    // const account = td.account("");
-    // console.log(account);
-
-    // const response = await td.getQuote("AMZN")
-    // console.log("RES", response.data)
-
-    // const response = await td.getQuote("AMZN");
-    // console.log("RES", response.data)
-
-    const response = await td.getQuotes(["AMZN", "AAPL"]);
-    console.log("RES", response.data)
-
-    // const market = td.market();
-    // console.log(account);
-
-    // const response2 = await market.getHoursForMultipleMarkets();
-    // console.log("RES", response.data);
+    const accountDetails = await td.getAccount("enter-your-account-id")
+    console.log("Account Details", accountDetails)
 };
 
 (async function () {
