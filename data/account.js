@@ -1,24 +1,35 @@
-const operations = require("./operations");
+const operations = require("../operations");
+const Request = require("../request");
+const fetch = new Request().fetch;
 
-class TDAccount {
-    constructor(accountId) {
-        this.accountId = accountId;
-    }
-}
+class TDAccount {}
 
 /**
  * Get TD Account balances, positions and orders for a specific account
  * @returns {Promise<any>} The Account
  */
-TDAccount.prototype.getAccount = function () {
-    return operations.account.getAccount.call(this, [this.accountId]);
+TDAccount.prototype.getAccount = function (accountId) {
+    return this.fetch(arguments, { url: `/accounts/${accountId}` });
 };
+
+/**
+ * 
+ * @returns 
+ */
+TDAccount.prototype.getAccounts = function () {
+    return this.fetch(arguments, { url: "/accounts" });
+}
+
+TDAccount.prototype.getTransaction = function(accountId, transactionId) {
+    
+}
 
 /**
  * Get all the orders associated with a specific account
  * @returns
  */
 TDAccount.prototype.getOrders = function (params) {
+    
     return operations.orders.getOrders.call(this, [this.accountId, params]);
 };
 

@@ -1,44 +1,46 @@
-const axios = require("axios");
-const { constants, defaults } = require("./properties");
+const { market, account, orders, movers, instruments, info } = require("./operations");
+const { login, getAuthUrl } = require("./oauth");
+const Base = require("./base")
+const Request = require("./request");
 
-class Client {
-    constructor(config){
-        this.apiKey = config.apiKey;
-        this.clientId = (`${this.apiKey}`).endsWith(constants.API_KEY_SUFFIX)
-            ? this.apiKey : this.apiKey + constants.API_KEY_SUFFIX;
-        this.redirectUrl = (config.redirectUrl || defaults.REDIRECT_URL) + ":" + (process.env.PORT || defaults.PORT);
-        this.accessToken = constants.NULL;
-        this.refreshToken = constants.NULL;
-        this.request = function ({
-            method = defaults.GET, url, data, params = {}, headers = {}
-        }) {
-            Object.assign(params, { apikey: this.apiKey });
-            if(this.accessToken) {
-                Object.assign(headers, { Authorization: `Bearer ${this.accessToken}` });
-            }
-            const instance = axios.create({ baseURL: constants.BASE_URL, params });
-            try {
-                return instance({
-                    method,
-                    url,
-                    data,
-                    headers
-                });
-            } catch (e) {
-                console.error("Error Occured", e);
-            }
-        };
-    }
-
-    setAccessToken(token) {
-        this.accessToken = token;
-        return this;
-    }
-
-    setRefreshToken(token) {
-        this.refreshToken = token;
-        return this;
+class TDClient extends Base {
+    constructor(config) {
+        super(config);
+        this.fetch = new Request().fetch;
     }
 }
 
-module.exports = Client;
+TDClient.prototype.getAccount = account.getAccount;
+TDClient.prototype.getAccounts = account.getAccounts;
+TDClient.prototype.getTransaction = account.getTransaction;
+TDClient.prototype.getTransactions = account.getTransactions;
+TDClient.prototype.getWatchlist = account.getWatchlist;
+TDClient.prototype.getWatchlists = account.getWatchlists;
+TDClient.prototype.createWatchList = account.createWatchList;
+TDClient.prototype.updateWatchList = account.updateWatchList;
+TDClient.prototype.getQuote = market.getQuote;
+TDClient.prototype.getQuotes = market.getQuotes;
+TDClient.prototype.getPriceHistory = market.getPriceHistory;
+TDClient.prototype.getMarketHours = market.getMarketHours;
+TDClient.prototype.getMarketHour = market.getMarketHour;
+TDClient.prototype.getOrder = orders.getOrder;
+TDClient.prototype.getOrders = orders.getOrders;
+TDClient.prototype.placeOrder = orders.placeOrder;
+TDClient.prototype.cancelOrder = orders.cancelOrder;
+TDClient.prototype.replaceOrder = orders.replaceOrder;
+TDClient.prototype.getSavedOrder = orders.getSavedOrder;
+TDClient.prototype.getSavedOrders = orders.getSavedOrders;
+TDClient.prototype.createSavedOrder = orders.createSavedOrder;
+TDClient.prototype.deleteSavedOrder = orders.deleteSavedOrder;
+TDClient.prototype.replaceSavedOrder = orders.replaceSavedOrder;
+TDClient.prototype.getPrefreferences = info.getAccountPreferences;
+TDClient.prototype.getUserPrincipals = info.getUserPrincipals;
+TDClient.prototype.updateAccountPreferences = info.updateAccountPreferences;
+TDClient.prototype.searchInstruments = instruments.searchInstruments;
+TDClient.prototype.getInstrument = instruments.getInstrument;
+TDClient.prototype.getMovers = movers.getMovers;
+TDClient.prototype.login = login;
+TDClient.prototype.getAuthUrl = getAuthUrl;
+
+
+module.exports = TDClient;

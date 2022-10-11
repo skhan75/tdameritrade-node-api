@@ -6,7 +6,7 @@ module.exports = {
          * @returns 
          */
         getAccount(accountId) {
-            return this.request({ 
+            return this.fetch({ 
                 url: `/accounts/${accountId}` 
             });
         },
@@ -15,7 +15,7 @@ module.exports = {
          * @returns 
          */
         getAccounts() {
-            return this.request({ 
+            return this.fetch({ 
                 url: "/accounts" 
             });
         },
@@ -26,7 +26,7 @@ module.exports = {
          * @returns 
          */
         getTransaction(accountId, transactionId) {
-            return this.request({ 
+            return this.fetch({ 
                 url: `/accounts/${accountId}/transactions/${transactionId}` 
             });
         },
@@ -40,7 +40,7 @@ module.exports = {
          * @returns 
          */
         getWatchlist(accountId, watchlistId) {
-            return this.request({ 
+            return this.fetch({ 
                 url: `/accounts/${accountId}/watchlists/${watchlistId}` 
             });
         },
@@ -50,7 +50,7 @@ module.exports = {
          * @returns 
          */
         getWatchlists(accountId) {
-            return this.request({ 
+            return this.fetch({ 
                 url: `/accounts/${accountId}/watchlists` 
             });
         },
@@ -72,7 +72,7 @@ module.exports = {
          * @returns 
          */
         getOrders(accountId, maxResults, fromEnteredTime, toEnteredTime, status) {
-            return this.request({
+            return this.fetch({
                 url: `/accounts/${accountId}/orders`,
                 params: {
                     maxResults,
@@ -89,7 +89,7 @@ module.exports = {
          * @returns 
          */
         getOrder(accountId, orderId) {
-            return this.request({ 
+            return this.fetch({ 
                 url: `/accounts/${accountId}/orders/${orderId}` 
             });
         },
@@ -100,7 +100,7 @@ module.exports = {
          * @returns 
          */
         placeOrder(accountId, orderData) {
-            return this.request({ 
+            return this.fetch({ 
                 method: "post", 
                 data: orderData, 
                 url: `/accounts/${accountId}/orders` 
@@ -114,7 +114,7 @@ module.exports = {
          * @returns 
          */
         replaceOrder(accountId, orderId, newOrderData) {
-            return this.request({ 
+            return this.fetch({ 
                 method: "put", 
                 data: newOrderData, 
                 url: `/accounts/${accountId}/orders/orderId` 
@@ -127,7 +127,7 @@ module.exports = {
          * @returns 
          */
         cancelOrder(accountId, orderId) {
-            return this.request({ 
+            return this.fetch({ 
                 method: "delete", 
                 url: `/accounts/${accountId}/orders/${orderId}` 
             });
@@ -139,7 +139,7 @@ module.exports = {
          * @returns 
          */
         createSavedOrder(accountId, orderData) {
-            return this.request({ 
+            return this.fetch({ 
                 method: "post", 
                 data: orderData, 
                 url: `/accounts/${accountId}/savedorders` 
@@ -153,7 +153,7 @@ module.exports = {
          * @returns 
          */
         deleteSavedOrder(accountId, orderData, savedOrderId) {
-            return this.request({ 
+            return this.fetch({ 
                 method: "delete", 
                 data: orderData, 
                 url: `/accounts/${accountId}/savedorders/${savedOrderId}` 
@@ -166,7 +166,7 @@ module.exports = {
          * @returns 
          */
         getSavedOrder(accountId, savedOrderId) {
-            return this.request({ 
+            return this.fetch({ 
                 url: `/accounts/${accountId}/savedorders/${savedOrderId}` 
             });
         },
@@ -176,7 +176,7 @@ module.exports = {
          * @returns 
          */
         getSavedOrders(accountId) {
-            return this.request({ 
+            return this.fetch({ 
                 url: `/accounts/${accountId}/savedorders` 
             });
         },
@@ -188,7 +188,7 @@ module.exports = {
          * @returns 
          */
         replaceSavedOrder(accountId, savedOrderId, newOrderData) {
-            return this.request({ 
+            return this.fetch({ 
                 method: "put", 
                 data: newOrderData, 
                 url: `/accounts/${accountId}/savedorders/${savedOrderId}` 
@@ -202,18 +202,14 @@ module.exports = {
          * @returns 
          */
         getAccountPreferences(accountId) {
-            return this.request({ 
-                url: `/accounts/${accountId}/preferences` 
-            });
+            return this.fetch({ url: `/accounts/${accountId}/preferences` });
         },
         /**
          * 
          * @returns 
          */
         getUserPrincipals() {
-            return this.request({
-                url: "/userprincipals"
-            });
+            return this.fetch({ url: "/userprincipals" });
         },
         /**
          * 
@@ -222,12 +218,32 @@ module.exports = {
          * @returns 
          */
         updateAccountPreferences(accountId, newPreferences) {
-            return this.request({
+            return this.fetch({
                 method: "put",
                 url: `/accounts/${accountId}/preferences`,
                 data: newPreferences
             });
         }
+    },
+    instruments: {
+        /**
+         * Search or retrieve instrument data, including fundamental data
+         * @param {*} symbol 
+         * @param {*} projection 
+         * @returns 
+         */
+        searchInstruments(symbol, projection) {
+            return this.fetch({ url: `/instruments`, params: { symbol, projection } });
+        },
+        /**
+         * Get an instrument by CUSIP
+         * @param {*} cusip 
+         * @returns 
+         */
+        getInstrument(cusip, test, test2) {
+            return this.fetch({ url: `/instruments/${cusip}` });
+        }
+
     },
     market: {
         /**
@@ -236,9 +252,7 @@ module.exports = {
          * @returns 
          */
         getQuote(symbol) {
-            return this.request({ 
-                url: `/marketdata/${symbol}/quotes` 
-            });
+            return this.fetch({ url: `/marketdata/${symbol}/quotes` });
         },
         /**
          * 
@@ -246,7 +260,7 @@ module.exports = {
          * @returns 
          */
         getQuotes(symbols) {
-            return this.request({ 
+            return this.fetch({ 
                 url: "/marketdata/quotes",
                 params: { symbol: [].concat(symbols).join(",") } 
             });
@@ -257,9 +271,7 @@ module.exports = {
          * @returns 
          */
         getPriceHistory(symbol) {
-            return this.request({ 
-                url: `/marketdata/${symbol}/pricehistory` 
-            });
+            return this.fetch({ url: `/marketdata/${symbol}/pricehistory` });
         },
         /**
          * 
@@ -268,10 +280,38 @@ module.exports = {
          * @returns 
          */
         getMarketHours(markets, date) {
-            return this.request({ 
+            return this.fetch({ 
                 url: "/marketdata/hours", 
                 params: { markets: [].concat(markets).join(","), date } 
             });
         },
+        /**
+         * Retrieve market hours for specified single market
+         * @param {*} market 
+         * @param {*} date 
+         * @returns 
+         */
+        getMarketHour(market, date) {
+            return this.fetch({
+                url: `/marketdata/${market}/hours`,
+                params: { date }
+            });
+        },
     },
+    movers: {
+        /**
+         * Top 10 (up or down) movers by value or percent for a particular market
+         * @param {*} market market code
+         * @param {*} direction up or down
+         * @param {*} change value or percent
+         * @returns 
+         */
+        getMovers(market, direction, change) {
+            return this.fetch({
+                url: `/marketdata/${market}/movers`,
+                params: { direction, change }
+            })
+        }
+    }
+
 };
