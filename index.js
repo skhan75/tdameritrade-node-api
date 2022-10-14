@@ -1,4 +1,4 @@
-const TDClient = require("./lib/client")
+const TDClient = require("./lib/client");
 
 class TDAmeritrade extends TDClient {
     constructor(config) {

@@ -3,6 +3,7 @@
 ### Follow the clienttest.js to see a sample
 
 ### Pending
+* Token Refresh
 * Schema Validation
 * Parameters Sanitization and validation
 * Error Handler Implementation

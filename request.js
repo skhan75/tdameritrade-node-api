@@ -1,4 +1,4 @@
-const { constants, defaults } = require("./properties");
+const { constants, defaults } = require("./enums");
 const axios = require("axios");
 
 class Request {
