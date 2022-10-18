@@ -9,4 +9,3 @@ class TDAmeritrade extends TDClient {
 module.exports = {
     TDAmeritrade
 };
-
